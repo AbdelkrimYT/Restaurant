@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Restaurant</string>
+    <string name="logo">Logo</string>
+    <string name="bienvenue">Bienvenue</string>
+    <string name="liste">Liste</string>
+    <string name="commande">Commande</string>
+    <string name="facture">Facture</string>
+    <string name="go_to_liste_page">Go to Liste Page</string>
+    <string name="go_to_commande_page">Go to Commande Page</string>
+    <string name="go_to_facture_page">Go to Facture Page</string>
+    <string name="valider">Valider</string>
+    <string name="annuler">Annuler</string>
+</resources>
