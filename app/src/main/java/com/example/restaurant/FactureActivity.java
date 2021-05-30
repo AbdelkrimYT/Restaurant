@@ -22,7 +22,7 @@ public class FactureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facture);
         factureListView = (ListView) findViewById(R.id.factureListView);
-        if ((dishs = getIntent().getStringArrayListExtra("MainToFacture")) == null)
+        if ((dishs = getIntent().getStringArrayListExtra(MainActivity.EXTRA_MAIN_TO_FACTURE)) == null)
                 dishs = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dishs);
         factureListView.setAdapter(adapter);

@@ -36,6 +36,7 @@ public class CommandeViewAdapter extends ArrayAdapter<Item> {
         image.setImageResource(getItem(position).getImageID());
         dishName.setText(getItem(position).getDishName());
         price.setText(getItem(position).getPrice());
+        checkBox.setChecked(getItem(position).isChecked());
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

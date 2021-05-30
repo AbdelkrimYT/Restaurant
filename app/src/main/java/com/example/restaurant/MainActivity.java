@@ -2,35 +2,75 @@ package com.example.restaurant;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String EXTRA_MAIN_TO_LIST = "com.example.restaurant.MainToListe";
+    public static final String EXTRA_MAIN_TO_COMMANDE = "com.example.restaurant.MainToCommande";
+    public static final String EXTRA_MAIN_TO_FACTURE = "com.example.restaurant.MainToFacture";
+    private ArrayList<Item> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if ((items = getIntent().getParcelableArrayListExtra(CommandeActivity.EXTRA_COMMANDE_TO_MAIN_ITEMS)) == null) {
+            items = new ArrayList<>();
+            setupItems();
+        }
     }
 
     public void openListActivity(View view) {
-        startActivity(new Intent(this, ListeActivity.class));
+        Intent intent = new Intent(this, ListeActivity.class);
+        intent.putParcelableArrayListExtra(EXTRA_MAIN_TO_LIST, items);
+        startActivity(intent);
     }
 
     public void openCommandeActivity(View view) {
-        startActivity(new Intent(this, CommandeActivity.class));
+        Intent intent = new Intent(this, CommandeActivity.class);
+        intent.putParcelableArrayListExtra(EXTRA_MAIN_TO_COMMANDE, items);
+        startActivity(intent);
     }
 
     public void openFactureActivity(View view) {
         Intent intent = new Intent(this, FactureActivity.class);
-        ArrayList<String> data = getIntent().getStringArrayListExtra("CommandeToMain");
-        intent.putStringArrayListExtra("MainToFacture", data);
+        ArrayList<String> data = getIntent().getStringArrayListExtra(CommandeActivity.EXTRA_COMMANDE_TO_MAIN_ITEMS_NAME);
+        intent.putStringArrayListExtra(EXTRA_MAIN_TO_FACTURE, data);
         startActivity(intent);
+    }
+
+    private void setupItems() {
+        items.add(new Item(R.drawable.im_dish_1, "Maitake Mushroom", "20 £", "After Noma’s pop-up in Japan, the restaurants director of R&D Thomas Frebel couldn’t shake the urge to come back. So in 2018 he returned to Tokyo to open Inua. The influence of Noma is apparent during the meal, but Frebel goes further, celebrating the ingredients of Japan with a wildly creative menu. The best dish of the night was a maitake mushroom that’s aged for five days, cold smoked for three more and braised in miso water, then served with cherry blossoms preserved in salt. Frebel presents the dish so simply, but it has incredible depth of flavor and meaty texture."));
+        items.add(new Item(R.drawable.im_dish_2, "Burrata e Ham", "20 £", "As the food world descended upon Chicago again for the James Beard Awards, Sarah Grueneberg’s Italian restaurant kept calling me like a siren song. Pretty much right off the plane I was parked at the bar, only to return again for dinner the next night. While everything I had was great, my favorite was the little English-muffin like flatbreads called tigelle, that she serves with burrata and prosciutto."));
+        items.add(new Item(R.drawable.im_dish_3, "Uni and Tapioca", "20 £", "In a tiny, two-story strip mall on LA’s west side, John Yao is making a big splash at a young age. The 28-year-old’s Taiwanese-American tasting-menu spot Kato was named the best restaurant in town by the Los Angeles Times. When my wife asked where I wanted to go on my [age redacted] birthday this year, I told her Kato. The meal started with a perfect little bite of fried tapioca with uni."));
+        items.add(new Item(R.drawable.im_dish_4, "Cappelletti", "20 £", "Listen, there are a lot of restaurants up and down the Golden State happy to tell you about their handmade pasta program and their California-Italian-style of cooking. It can all start to look the same after a while. That’s why Sorrel was such a pleasant surprise. Chef Alexander Hong’s food is beautiful and delicate, but not overly precious. When I visited as summer was transitioning to fall, I tried the little stuffed cappelletti with gorgonzola dolce, prosciutto, pistachio and plum. The shaving of truffles didn’t hurt either. It was a fruity and earthy dish that felt in tune with the season."));
+        items.add(new Item(R.drawable.im_dish_5, "Caviar and Banana Pancake", "20 £", "It’s a dish that will haunt you. More than a few people I’ve spoken with who’ve had Josh Skenes’ Angler reserve caviar dolloped atop a banana pancake and some banana peel butter have daydreamed about going back to the LA outpost of Skenes’ a la carte seafood place just to sit at the bar and have the caviar again. It’s that good."));
+        items.add(new Item(R.drawable.im_dish_6, "Poached Pork Dumplings", "20 £", "The Hong Kong-based restaurant that made its American debut a year ago, is best known for its stellar Peking duck, but it also excels at other dishes like fried mashed potatoes floating in a rich pool of braised short rib, sesame prawn toast, king crab hargow or these poached pork dumplings in aged vinegar."));
+        items.add(new Item(R.drawable.im_dish_7, "Tocino de Cielo", "20 £", "I made my pilgrimage to one of Paris’ great restaurants of the century, Iñaki Aizpitarte’s neo-bistro Le Chateaubriand. His tasting menu’s creative procession of dishes concluded with a dessert he’s turned into a classic: Tocino de Cielo. It’s a take on a dessert from the Spanish chef’s homeland, where instead of serving a flan-like tocino de cielo, it’s a caramelized egg yolk that’s a perfect punctuation to the meal."));
+        items.add(new Item(R.drawable.im_dish_7, "Uni Panna Cotta ", "20 £", "Our chef of the year Chris Shepherd created one of our favorite steakhouses in America with Georgia James in Houston. What makes it so great is his willingness to make all the dishes that aren’t steaks as good as the main event form his Lamburger Helper to creamed collard greens to this uni panna cotta with Fresno chile gastrique and crushed peanuts."));
+        items.add(new Item(R.drawable.im_dish_9, "Fish Hiding in Kelp", "20 £", "Mexico City meets Los Angeles at Gabriela Camara and Jessica Koslow’s joint effort in Santa Monica. The two powerhouse chefs are turning out a unique take on Mexican food. Everyone’s meal should start with the addictive little fritto misto called Fish Hiding in Kelp where Santa Barbara kelp, anchovies and meyer lemon are dipped in a masa batter and fried."));
+        items.add(new Item(R.drawable.im_dish_10, "Mussels for Brunch", "20 £", "On my latest sojourn to my hometown, Seattle, I snuck away from my family long enough to try Eric Rivera’s Addo for the first time. The Alinea Group alum offers the rare brunch tasting menu, and that particular Sunday he kicked it off with this beautiful dish of mussels, mint, smoked cream, pickled oyster jus, gooseberry, chervil, apricot, and fennel pollen. Come for the food, stay for Rivera’s funny and engaging stories as you relax at the chef’s counter."));
+        items.add(new Item(R.drawable.im_dish_11, "Coconut Shrimp Bowl", "20 £", "When you’re not seeing JJ Johnson whipping up something delicious on the Today Show, you’ll find the young chef at his restaurant in Harlem, where he’s celebrating rice and the cultures who cook with it. Each of the bowls feature a different variety of rice from Carolina Gold to Basmati to China Black. The dish I gravitate to is the excellent shrimp, sticky rice, coconut and green curry."));
+        items.add(new Item(R.drawable.im_dish_12, "Margherita Pizza", "20 £", "The idea of it all seemed a big overblown—something foodie dorks like to tell each other to sound cool. But the notion that the best Neapolitan-style pizza was being made in Tokyo, despite my skepticism, turned out to be pretty true. When I sat at the little counter at Savoy with a front row of the pizzaiolo cranking out pies, it all seemed pretty customary. But then I got my Margherita and it was perfect. The bright saltiness of the pie, the fruity olive oil, the slight acidity of the tomatoes and the perfect char on the crust made this one of the best pizzas I’ve ever eaten in my life."));
+        items.add(new Item(R.drawable.im_dish_13, "Oyster and Bone Marrow", "20 £", "From Somni to n/naka, there’s a lot of great fine dining happening in Los Angeles right now, but in this populist eating town it still feels like a bold move to open up a prix fixe place when a la carte restaurants with shared plates dominate the scene. A choose your own adventure with four, six or nine courses, chef Eric Bost and team stick the landing at Auburn. However, if he was serving a la carte, I’d keep reordering the kusshi oyster warmed over the coals in the hearth served with bone marrow and porcini."));
+        items.add(new Item(R.drawable.im_dish_14, "Bloomin Onion", "20 £", "Mei Lin and I grew up in the suburbs. Different suburbs, but suburbs all the same. That means Bloomin’ Onions hold a special place in our hearts (and lodged in our coronary arteries). In her debut restaurant, the Top Chef winner infused her food with a hint of nostalgia and whimsy and she couldn’t resist putting her take on Outback Steakhouse’s calorie bomb on her menu. Her version uses a sweet Maui onion that she hand-cuts to create little petals. Then she soaks it in buttermilk then dredges in flour, corn starch, rice flour, baking powder and salt. She fries the allium to a nice crisp, dusts it with tom yum seasoning and then serves with an airy coconut ranch sauce. It’s perfect."));
+        items.add(new Item(R.drawable.im_dish_15, "Raspberry and Vanilla Cruffin", "20 £", "Dan Riesenberger’s Instagram drew me to his little shop on the outskirts of downtown Columbus, Ohio. I wanted to see if his breads and pastries tasted as good as they looked. They certainly did. I especially loved the cruffin, a rolled up slab of laminated dough that’s baked until golden brown, dusted with sugar and then pumped full of raspberry preserves and vanilla cream."));
+        items.add(new Item(R.drawable.im_dish_16, "Soft Tofu and Caramelized Soy", "20 £", "David Chang is in full-on expansion mode of late, dropping new restaurants left and right, with the best of the bunch being Eunjo Park’s Kawi inside Hudson Yards. Park’s soft tofu starter is a real standout. She begins by topping housemade tofu with demerara sugar then brûlées it with a torch. Then it’s served with trout roe, caramelized soy and crushed seaweed. The dish is a perfect mix of salty and sweet."));
+        items.add(new Item(R.drawable.im_dish_17, "Garnet Yams, Rustic Canyon", "20 £", "The return of Michelin to Los Angeles meant the outstanding Rustic Canyon was eligible for a much-deserved star. The farm-to-table restaurant serving some of the best of California cuisine is now under the guidance of chef Andy Doubrava and nabbed Michelin honors in June. Though I’m an avowed meat eater, I do find myself ordering a lot of vegetables anytime I’m at Rustic Canyon. A favorite this year was this plate of garnet yams, romesco, sherry caramel and smoked Marcona almonds."));
+        items.add(new Item(R.drawable.im_dish_18, "Soufflé Pancakes", "20 £", "While many people visiting Japan for the first time will make a beeline to ramen and sushi, my first order of business was dining on a stack of the Instagram-friendly soufflé pancakes that have proliferated in Tokyo and now spread to America. Tucked in the seventh floor of nondescript building on a side street in the posh Ginza neighborhood, I almost couldn’t find A Happy Pancake. But I was happy I did. The light, but still custardy pancakes lived up to the hype."));
+        items.add(new Item(R.drawable.im_dish_19, "Dungeness Crab", "20 £", "There are any number of Lincoln Carson’s outstanding pastries that could be on this list of best things I ate this year, but in 2019, the pastry chef tackled the savory side too. His debut restaurant is a reimagined French brasserie with plenty of creativity. His crab salad starts with a tangy mustard beurre blanc and then he builds a tower of crab, squid ink pan de mi, avocado and mixed greens. The dish expertly balances richness and acidity as well as the creaminess of the avocado and beurre blanc with the hearty texture of the greens and crispness of the pan di mie."));
+        items.add(new Item(R.drawable.im_dish_20, "Manchego Sausage", "20 £", "This is a place you just wish was right in your neighborhood. Michael and Lindsay Tusk have taken their respective love of Parisian wine bars and San Sebastian pintxos bars to create a natural wine haven in San Francisco. The husband-wife duo behind Michelin three-star Quince pretty effortlessly let their hair down with the relaxed and inviting Verjus, serving small plates with natural wines. Michael has a special place in his heart for the sausages, like the manchego one pictured above. “If someone doesn’t order the sausage I think why not???” He says. “Just send them one anyway!”"));
+        items.add(new Item(R.drawable.im_dish_21, "Uni on Liquid Toast", "20 £", "My meal at Saison was truly one of the great dining experiences I’ve ever had, so it’s hard to pick just one dish. Laurent Gras now helms the restaurant Josh Skenes originally built, and while Gras is putting his imprint on the menu, he’s still playing a few of the old hits. He has taken the “liquid toast” and swapped in his grandmother’s 65-year-old levain. There’s a touch of sourness to the bread that complements the sweetness of the uni and the crunch of one side of the bread plays beautifully with the softness of the sea urchin."));
+        items.add(new Item(R.drawable.im_dish_22, "Bubbe’s Brisket", "20 £", "Had I written this list back in 2016, it definitely would have included any number of dishes from the Israeli restaurant Shaya. That’s back when Alon Shaya and Zachary Engel were still running the show in New Orleans. Since then Engel has won a James Beard Rising Star award and headed north to Chicago to open his Middle Eastern spot Galit. There, Engel is making some of the best hummus you’ll eat anywhere, avoiding the graininess you find with lesser versions. He tops one of his offerings with brisket that’s seasoned with cinnamon."));
+        items.add(new Item(R.drawable.im_dish_23, "Uovo Raviolo di Nino Bergese", "20 £", "Stefano Secchi may have Osteria Francescana on his resume, but his most important culinary education happened nearby in Modena, Italy, learning to create handmade pasta like a nonna. At the perpetually packed Rezdora, he channels the food of Emilia-Romagna, with a pasta focused menu that includes this big ravioli filled with a runny egg yolk and topped with a generous shaving of truffles. "));
+        items.add(new Item(R.drawable.im_dish_24, "Cardenal, Mercado Little Spain", "20 £", "It’s hard to know where to begin with Jose Andres, Ferran Adrià and Albert Adrià’s ode to Spain in Hudson Yards. Each little kiosk offers its own distinct delights from paella, to tortilla de patatas, to churros and more. The pastry genius Albert really shines with this dessert he learned in Barcelona where meringue is piped in a ring that encircles a sponge cake. Then, two of them are sandwiched together with whipped cream in between, then finished with a drizzle of chocolate on top."));
+        items.add(new Item(R.drawable.im_dish_25, "Lamb", "20 £", "At Jeremy Fox’s big convivial new restaurant, he’s cooking food steeped in his Ohio upbringing and a career spent cooking in both northern and southern California. And he’s self-consciously not getting too fancy with it, serving hearty, family style dishes like his grilled lamb with persion spices and a dollop of saffron yogurt atop a bed of crispy dill rice."));
     }
 }
